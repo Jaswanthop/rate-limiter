@@ -1,0 +1,63 @@
+package com.jaswanth.rate_limiter.limiter;
+
+
+
+import com.jaswanth.rate_limiter.domain.ClientIdentity;
+import com.jaswanth.rate_limiter.domain.RateLimitPolicy;
+import com.jaswanth.rate_limiter.domain.RateLimitResult;
+
+import java.time.Instant;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class FixedWindowRateLimiter implements RateLimiter {
+
+    private final Map<String, WindowCounter> counters =
+            new ConcurrentHashMap<>();
+
+    @Override
+    public RateLimitResult check(
+            ClientIdentity client,
+            RateLimitPolicy policy
+    ) {
+
+        long currentWindow =
+                Instant.now().getEpochSecond()
+                        / policy.windowSeconds();
+
+        String key =
+                client.value() + ":" + currentWindow;
+
+        WindowCounter counter =
+                counters.computeIfAbsent(
+                        key,
+                        k -> new WindowCounter()
+                );
+
+        int count = counter.count.incrementAndGet();
+
+        if (count <= policy.limit()) {
+
+            return new RateLimitResult(
+                    true,
+                    policy.limit(),
+                    policy.limit() - count,
+                    0
+            );
+        }
+
+        return new RateLimitResult(
+                false,
+                policy.limit(),
+                0,
+                policy.windowSeconds()
+        );
+    }
+
+    private static class WindowCounter {
+
+        private final AtomicInteger count =
+                new AtomicInteger();
+    }
+}
