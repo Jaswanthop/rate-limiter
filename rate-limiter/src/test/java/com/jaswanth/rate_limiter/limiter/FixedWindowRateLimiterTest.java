@@ -53,4 +53,29 @@ class FixedWindowRateLimiterTest {
         assertFalse(result.allowed());
         assertEquals(0, result.remaining());
     }
+    @Test
+    void shouldRejectWhenSlidingWindowIsFull() {
+
+        RateLimiter limiter =
+                new SlidingWindowLogRateLimiter();
+
+        ClientIdentity client =
+                new ClientIdentity("USER_ID", "user-1");
+
+        RateLimitPolicy policy =
+                new RateLimitPolicy(5, 10);
+
+        for (int i = 0; i < 5; i++) {
+            RateLimitResult result =
+                    limiter.check(client, policy);
+
+            assertTrue(result.allowed());
+        }
+
+        RateLimitResult result =
+                limiter.check(client, policy);
+
+        assertFalse(result.allowed());
+        assertEquals(0, result.remaining());
+    }
 }
