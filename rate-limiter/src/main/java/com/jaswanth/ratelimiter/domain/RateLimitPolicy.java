@@ -1,4 +1,4 @@
-package com.jaswanth.rate_limiter.domain;
+package com.jaswanth.ratelimiter.domain;
 
 public record RateLimitPolicy(
         int limit,

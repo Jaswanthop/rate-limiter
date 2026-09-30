@@ -1,4 +1,4 @@
-package com.jaswanth.rate_limiter;
+package com.jaswanth.ratelimiter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

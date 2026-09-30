@@ -1,9 +1,9 @@
-package com.jaswanth.rate_limiter.limiter;
+package com.jaswanth.ratelimiter.limiter;
 
 
-import com.jaswanth.rate_limiter.domain.ClientIdentity;
-import com.jaswanth.rate_limiter.domain.RateLimitPolicy;
-import com.jaswanth.rate_limiter.domain.RateLimitResult;
+import com.jaswanth.ratelimiter.domain.ClientIdentity;
+import com.jaswanth.ratelimiter.domain.RateLimitPolicy;
+import com.jaswanth.ratelimiter.domain.RateLimitResult;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,4 +78,5 @@ class FixedWindowRateLimiterTest {
         assertFalse(result.allowed());
         assertEquals(0, result.remaining());
     }
+    
 }

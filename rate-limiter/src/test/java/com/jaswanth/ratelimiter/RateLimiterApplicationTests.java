@@ -1,4 +1,4 @@
-package com.jaswanth.rate_limiter;
+package com.jaswanth.ratelimiter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
